@@ -228,5 +228,5 @@ function toggleSign() {
 
 function updateUI() {
     currText.innerText = current;
-    prevText.innerText = previous;
+    prevText.innerText = previous && op ? `${previous} ${op}` : previous;
 }
