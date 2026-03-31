@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+    <h1 class="os-title">Calculator</h1>
+
+    <!-- Login Section -->
+    <div id="login-section" class="login-container">
+        <div class="login-card">
+            <h2>Login</h2>
+            <input type="text" id="username-input" placeholder="Enter your name" />
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <!-- Calculator Section (hidden until login) -->
+    <div id="calculator-section" class="app-wrapper" style="display: none;">
+        <div id="user-name" style="text-align: center; margin-bottom: 20px; font-weight: bold; color: #A5A5A5; font-size: 0.9rem; letter-spacing: 1px;"></div>
+        <div class="main-container">
+        <div class="calculator">
+            <div class="display">
+                <div id="prev-operand"></div>
+                <div id="curr-operand">0</div>
+            </div>
+            <div class="grid">
+                <button class="btn-gray span-two" onclick="clearAll()">AC</button>
+                <button class="btn-gray" onclick="deleteLast()">DEL</button>
+                <button class="btn-orange" onclick="chooseOp('÷')">÷</button>
+                
+                <button onclick="addNum('7')">7</button>
+                <button onclick="addNum('8')">8</button>
+                <button onclick="addNum('9')">9</button>
+                <button class="btn-orange" onclick="chooseOp('×')">×</button>
+                
+                <button onclick="addNum('4')">4</button>
+                <button onclick="addNum('5')">5</button>
+                <button onclick="addNum('6')">6</button>
+                <button class="btn-orange" onclick="chooseOp('-')">−</button>
+                
+                <button onclick="addNum('1')">1</button>
+                <button onclick="addNum('2')">2</button>
+                <button onclick="addNum('3')">3</button>
+                <button class="btn-orange" onclick="chooseOp('+')">+</button>
+                
+                <button class="span-two" onclick="addNum('0')">0</button>
+                <button onclick="addNum('.')">.</button>
+                <button class="btn-orange" onclick="exec()">=</button>
+            </div>
+        </div>
+
+        <div class="history-card">
+            <h2>Calculation Log</h2>
+            <ul id="history-list">
+                <li style="color: #666;">Waiting for data...</li>
+            </ul>
+        </div>
+    </div>
+        <!-- Bottom Footer with Buttons -->
+        <div class="bottom-footer">
+            <button onclick="logout()" class="footer-btn logout-btn">← Logout</button>
+            <button onclick="deleteAllData()" class="footer-btn delete-all-btn">🗑 Clear All</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
