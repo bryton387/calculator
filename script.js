@@ -36,6 +36,11 @@ function login() {
 }
 
 function logout() {
+    // Save history before logging out
+    if (currentUser && history.length > 0) {
+        localStorage.setItem(`history_${currentUser}`, JSON.stringify(history));
+    }
+    
     currentUser = null;
     localStorage.removeItem('currentUser');
     current = '';
@@ -75,10 +80,29 @@ window.addEventListener('DOMContentLoaded', function() {
         const savedHistory = localStorage.getItem(`history_${savedUser}`);
         history = savedHistory ? JSON.parse(savedHistory) : [];
         
+        console.log(`Auto-logged in as ${savedUser} with ${history.length} records`);
+        
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('calculator-section').style.display = 'block';
         document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
         updateHistoryDisplay();
+    }
+});
+
+// Also check on page visibility change
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && !currentUser) {
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = savedUser;
+            const savedHistory = localStorage.getItem(`history_${savedUser}`);
+            history = savedHistory ? JSON.parse(savedHistory) : [];
+            
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('calculator-section').style.display = 'block';
+            document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
+            updateHistoryDisplay();
+        }
     }
 });
 
