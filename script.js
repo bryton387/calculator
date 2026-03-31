@@ -217,7 +217,11 @@ function deleteLast() {
 }
 
 function toggleSign() {
-    if (current === '' || current === '0') return;
+    if (current === '') {
+        current = '-'; // Start with negative sign if empty
+        updateUI();
+        return;
+    }
     if (current.toString().startsWith('-')) {
         current = current.toString().substring(1);
     } else {
