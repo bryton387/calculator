@@ -216,6 +216,16 @@ function deleteLast() {
     updateUI();
 }
 
+function toggleSign() {
+    if (current === '' || current === '0') return;
+    if (current.toString().startsWith('-')) {
+        current = current.toString().substring(1);
+    } else {
+        current = '-' + current.toString();
+    }
+    updateUI();
+}
+
 function updateUI() {
     currText.innerText = current;
     prevText.innerText = previous;
