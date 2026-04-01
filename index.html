@@ -19,6 +19,30 @@
         </div>
     </div>
 
+    <!-- Admin Panel Section (hidden until admin login) -->
+    <div id="admin-section" class="app-wrapper" style="display: none;">
+        <div id="admin-header" style="text-align: center; margin-bottom: 20px; font-weight: bold; color: #FF6B35; font-size: 1.2rem; letter-spacing: 1px;">👨‍💼 Admin Dashboard</div>
+        <div class="main-container">
+            <div class="admin-container">
+                <div class="users-list">
+                    <h2>All Users</h2>
+                    <ul id="users-list-ui">
+                        <li style="color: #666;">Loading users...</li>
+                    </ul>
+                </div>
+                <div class="admin-history-card">
+                    <h2 id="viewed-user-name">Select a user</h2>
+                    <ul id="admin-history-list">
+                        <li style="color: #666;">Select a user to view their calculations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-footer">
+            <button onclick="logout()" class="footer-btn logout-btn">← Logout</button>
+        </div>
+    </div>
+
     <!-- Calculator Section (hidden until login) -->
     <div id="calculator-section" class="app-wrapper" style="display: none;">
         <div id="user-name" style="text-align: center; margin-bottom: 20px; font-weight: bold; color: #A5A5A5; font-size: 0.9rem; letter-spacing: 1px;"></div>

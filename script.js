@@ -21,23 +21,34 @@ function login() {
     currentUser = username;
     localStorage.setItem('currentUser', username);
     
-    // Load user's history
-    const savedHistory = localStorage.getItem(`history_${username}`);
-    history = savedHistory ? JSON.parse(savedHistory) : [];
+    // Check if user is admin
+    if (username.toLowerCase() === 'bryton') {
+        // Show admin panel
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('calculator-section').style.display = 'none';
+        document.getElementById('admin-section').style.display = 'block';
+        loadAllUsers();
+    } else {
+        // Load user's history
+        const savedHistory = localStorage.getItem(`history_${username}`);
+        history = savedHistory ? JSON.parse(savedHistory) : [];
+        
+        // Show calculator, hide login
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('calculator-section').style.display = 'block';
+        document.getElementById('admin-section').style.display = 'none';
+        document.getElementById('user-name').innerText = `Welcome, ${username}!`;
+        
+        // Update history display
+        updateHistoryDisplay();
+    }
     
-    // Show calculator, hide login
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('calculator-section').style.display = 'block';
-    document.getElementById('user-name').innerText = `Welcome, ${username}!`;
-    
-    // Update history display
-    updateHistoryDisplay();
     usernameInput.value = '';
 }
 
 function logout() {
     // Save history before logging out
-    if (currentUser && history.length > 0) {
+    if (currentUser && history.length > 0 && currentUser.toLowerCase() !== 'bryton') {
         localStorage.setItem(`history_${currentUser}`, JSON.stringify(history));
     }
     
@@ -48,10 +59,88 @@ function logout() {
     op = undefined;
     history = [];
     
-    // Show login, hide calculator
+    // Show login, hide calculator and admin
     document.getElementById('login-section').style.display = 'block';
     document.getElementById('calculator-section').style.display = 'none';
+    document.getElementById('admin-section').style.display = 'none';
     document.getElementById('username-input').focus();
+}
+
+// Admin Functions
+function loadAllUsers() {
+    const usersList = document.getElementById('users-list-ui');
+    usersList.innerHTML = '';
+    
+    const allKeys = Object.keys(localStorage);
+    const uniqueUsers = new Set();
+    
+    // Extract unique usernames from history keys
+    allKeys.forEach(key => {
+        if (key.startsWith('history_')) {
+            const username = key.replace('history_', '');
+            if (username.toLowerCase() !== 'currentuser') {
+                uniqueUsers.add(username);
+            }
+        }
+    });
+    
+    if (uniqueUsers.size === 0) {
+        usersList.innerHTML = '<li style="color: #666;">No users found</li>';
+        return;
+    }
+    
+    uniqueUsers.forEach(username => {
+        const li = document.createElement('li');
+        li.style.cursor = 'pointer';
+        li.style.padding = '10px';
+        li.style.margin = '5px 0';
+        li.style.backgroundColor = '#f0f0f0';
+        li.style.borderRadius = '5px';
+        li.style.borderLeft = '4px solid #FF6B35';
+        li.style.transition = 'all 0.3s ease';
+        li.innerHTML = `<strong>${username}</strong>`;
+        li.onmouseover = () => {
+            li.style.backgroundColor = '#e8e8e8';
+            li.style.transform = 'translateX(5px)';
+        };
+        li.onmouseout = () => {
+            li.style.backgroundColor = '#f0f0f0';
+            li.style.transform = 'translateX(0)';
+        };
+        li.onclick = () => viewUserHistory(username);
+        usersList.appendChild(li);
+    });
+}
+
+function viewUserHistory(username) {
+    const savedHistory = localStorage.getItem(`history_${username}`);
+    const userHistory = savedHistory ? JSON.parse(savedHistory) : [];
+    
+    const adminHistoryList = document.getElementById('admin-history-list');
+    const viewedUserName = document.getElementById('viewed-user-name');
+    
+    viewedUserName.innerText = `${username}'s Calculations`;
+    viewedUserName.style.color = '#333';
+    
+    if (userHistory.length === 0) {
+        adminHistoryList.innerHTML = '<li style="color: #666;">No calculations yet</li>';
+        return;
+    }
+    
+    adminHistoryList.innerHTML = '';
+    userHistory.forEach((record, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span class="history-item">
+                <div>
+                    <span class="eq-text">${record.eq}</span> 
+                    <span class="res-text">= ${record.res}</span>
+                </div>
+            </span>
+        `;
+        li.style.cursor = 'default';
+        adminHistoryList.appendChild(li);
+    });
 }
 
 function deleteAllData() {
@@ -77,15 +166,27 @@ window.addEventListener('DOMContentLoaded', function() {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
         currentUser = savedUser;
-        const savedHistory = localStorage.getItem(`history_${savedUser}`);
-        history = savedHistory ? JSON.parse(savedHistory) : [];
         
-        console.log(`Auto-logged in as ${savedUser} with ${history.length} records`);
-        
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('calculator-section').style.display = 'block';
-        document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
-        updateHistoryDisplay();
+        if (savedUser.toLowerCase() === 'bryton') {
+            // Auto-login as admin
+            console.log(`Auto-logged in as admin: ${savedUser}`);
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('calculator-section').style.display = 'none';
+            document.getElementById('admin-section').style.display = 'block';
+            loadAllUsers();
+        } else {
+            // Auto-login as regular user
+            const savedHistory = localStorage.getItem(`history_${savedUser}`);
+            history = savedHistory ? JSON.parse(savedHistory) : [];
+            
+            console.log(`Auto-logged in as ${savedUser} with ${history.length} records`);
+            
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('calculator-section').style.display = 'block';
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
+            updateHistoryDisplay();
+        }
     }
 });
 
@@ -95,10 +196,22 @@ document.addEventListener('visibilitychange', function() {
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
             currentUser = savedUser;
-            const savedHistory = localStorage.getItem(`history_${savedUser}`);
-            history = savedHistory ? JSON.parse(savedHistory) : [];
             
-            document.getElementById('login-section').style.display = 'none';
+            if (savedUser.toLowerCase() === 'bryton') {
+                document.getElementById('admin-section').style.display = 'block';
+                document.getElementById('calculator-section').style.display = 'none';
+                loadAllUsers();
+            } else {
+                const savedHistory = localStorage.getItem(`history_${savedUser}`);
+                history = savedHistory ? JSON.parse(savedHistory) : [];
+                document.getElementById('calculator-section').style.display = 'block';
+                document.getElementById('admin-section').style.display = 'none';
+                document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
+                updateHistoryDisplay();
+            }
+        }
+    }
+});
             document.getElementById('calculator-section').style.display = 'block';
             document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
             updateHistoryDisplay();
