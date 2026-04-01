@@ -212,12 +212,6 @@ document.addEventListener('visibilitychange', function() {
         }
     }
 });
-            document.getElementById('calculator-section').style.display = 'block';
-            document.getElementById('user-name').innerText = `Welcome, ${savedUser}!`;
-            updateHistoryDisplay();
-        }
-    }
-});
 
 function addNum(num) {
     if (num === '.' && current.includes('.')) return;
