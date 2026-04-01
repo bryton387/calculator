@@ -1,29 +1,31 @@
 // Developer Tools Detection
+let devToolsOpen = false;
+
 function detectDevTools() {
-    const threshold = 160; // Minimum height/width for dev tools
+    const threshold = 160;
     
-    const isDevToolsOpen = () => {
-        return (
+    setInterval(() => {
+        const isOpen = (
             window.outerHeight - window.innerHeight > threshold ||
             window.outerWidth - window.innerWidth > threshold
         );
-    };
-    
-    setInterval(() => {
-        if (isDevToolsOpen()) {
+        
+        if (isOpen && !devToolsOpen) {
+            // Dev tools just opened
+            devToolsOpen = true;
             document.body.classList.add('dev-open');
             document.body.style.pointerEvents = 'none';
-        } else {
+            console.clear();
+        } else if (!isOpen && devToolsOpen) {
+            // Dev tools just closed
+            devToolsOpen = false;
             document.body.classList.remove('dev-open');
             document.body.style.pointerEvents = 'auto';
         }
-    }, 500);
+    }, 100); // Check more frequently for immediate response
 }
 
-// Start detection when page loads
-window.addEventListener('load', detectDevTools);
-
-// Also start immediately for faster detection
+// Start detection immediately
 detectDevTools();
 
 let current = '';
