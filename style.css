@@ -55,6 +55,15 @@ body.dev-open::before {
     font-size: 1.1rem;
 }
 
+.main-container {
+    display: flex;
+    gap: 30px;
+    max-width: 900px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 @keyframes blink {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0.5; }
@@ -67,14 +76,6 @@ body.dev-open::before {
     }
 }
 
-.main-container {
-    display: flex;
-    gap: 30px;
-    max-width: 900px;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-}
 
 @media (max-width: 768px) {
     .main-container {
@@ -111,25 +112,10 @@ body.dev-open::before {
     margin-bottom: 15px;
 }
 
-@media (max-width: 768px) {
-    .display {
-        height: 90px;
-        padding: 8px 15px;
-        margin-bottom: 10px;
-    }
-}
 
 #prev-operand { color: var(--text-gray); font-size: 1.1rem; min-height: 1.5rem; }
 #curr-operand { color: var(--text-light); font-size: 3rem; font-weight: 300; }
 
-@media (max-width: 768px) {
-    #curr-operand {
-        font-size: 2rem;
-    }
-    #prev-operand {
-        font-size: 0.9rem;
-    }
-}
 
 .grid {
     display: grid;
@@ -152,13 +138,6 @@ button {
 button:hover { filter: brightness(1.3); }
 button:active { transform: scale(0.95); }
 
-@media (max-width: 768px) {
-    button {
-        height: 50px;
-        width: 50px;
-        font-size: 1.1rem;
-    }
-}
 
 .btn-orange { background-color: var(--accent); }
 .btn-gray { background-color: #A5A5A5; color: black; }
@@ -173,13 +152,6 @@ button:active { transform: scale(0.95); }
     border: 1px solid #333;
 }
 
-@media (max-width: 768px) {
-    .history-card {
-        width: 100%;
-        max-width: 320px;
-        padding: 15px;
-    }
-}
 
 .history-card h2 {
     font-size: 0.85rem;
@@ -432,3 +404,38 @@ button:active { transform: scale(0.95); }
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(255, 149, 0, 0.3);
 }
+
+
+@media (max-width: 768px) {
+    .display {
+        height: 90px;
+        padding: 8px 15px;
+        margin-bottom: 10px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    #curr-operand {
+        font-size: 2rem;
+    }
+    #prev-operand {
+        font-size: 0.9rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    button {
+        height: 50px;
+        width: 50px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .history-card {
+        width: 100%;
+        max-width: 320px;
+        padding: 15px;
+    } }

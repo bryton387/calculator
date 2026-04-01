@@ -1,4 +1,4 @@
-// Developer Tools Detection
+
 let devToolsOpen = false;
 
 function detectDevTools() {
@@ -25,7 +25,6 @@ function detectDevTools() {
     }, 100); // Check more frequently for immediate response
 }
 
-// Start detection immediately
 detectDevTools();
 
 let current = '';
@@ -38,7 +37,7 @@ const currText = document.getElementById('curr-operand');
 const prevText = document.getElementById('prev-operand');
 const listUI = document.getElementById('history-list');
 
-// Login/Logout Functions
+
 function login() {
     const usernameInput = document.getElementById('username-input');
     const username = usernameInput.value.trim();
@@ -51,7 +50,7 @@ function login() {
     currentUser = username;
     localStorage.setItem('currentUser', username);
     
-    // Check if user is admin
+
     if (username.toLowerCase() === 'bryton') {
         // Show admin panel
         document.getElementById('login-section').style.display = 'none';
@@ -69,8 +68,7 @@ function login() {
         document.getElementById('admin-section').style.display = 'none';
         document.getElementById('user-name').innerText = `Welcome, ${username}!`;
         
-        // Update history display
-        updateHistoryDisplay();
+      updateHistoryDisplay();
     }
     
     usernameInput.value = '';
@@ -89,14 +87,14 @@ function logout() {
     op = undefined;
     history = [];
     
-    // Show login, hide calculator and admin
+
     document.getElementById('login-section').style.display = 'block';
     document.getElementById('calculator-section').style.display = 'none';
     document.getElementById('admin-section').style.display = 'none';
     document.getElementById('username-input').focus();
 }
 
-// Admin Functions
+
 function loadAllUsers() {
     const usersList = document.getElementById('users-list-ui');
     usersList.innerHTML = '';
@@ -104,7 +102,7 @@ function loadAllUsers() {
     const allKeys = Object.keys(localStorage);
     const uniqueUsers = new Set();
     
-    // Extract unique usernames from history keys
+ 
     allKeys.forEach(key => {
         if (key.startsWith('history_')) {
             const username = key.replace('history_', '');
@@ -191,7 +189,7 @@ function deleteAllData() {
     alert(`All data for ${currentUser} has been deleted.`);
 }
 
-// Check if user was already logged in
+
 window.addEventListener('DOMContentLoaded', function() {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
@@ -205,7 +203,7 @@ window.addEventListener('DOMContentLoaded', function() {
             document.getElementById('admin-section').style.display = 'block';
             loadAllUsers();
         } else {
-            // Auto-login as regular user
+
             const savedHistory = localStorage.getItem(`history_${savedUser}`);
             history = savedHistory ? JSON.parse(savedHistory) : [];
             
@@ -220,7 +218,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Also check on page visibility change
+
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden && !currentUser) {
         const savedUser = localStorage.getItem('currentUser');
@@ -264,7 +262,7 @@ function exec() {
     const c = parseFloat(current);
     if (isNaN(p) || isNaN(c)) return;
 
-    // Objective: Implement functions for basic operations
+ 
     switch (op) {
         case '+': result = p + c; break;
         case '-': result = p - c; break;
@@ -273,19 +271,19 @@ function exec() {
         default: return;
     }
 
-    // Objective: Store each calculation in an array
+ 
     const record = { 
         eq: `${p} ${op} ${c}`, 
         res: result 
     };
     history.push(record);
     
-    // Save to localStorage
+ 
     if (currentUser) {
         localStorage.setItem(`history_${currentUser}`, JSON.stringify(history));
     }
     
-    // Objective: Display history to user
+ 
     updateHistoryUI(record);
 
     current = result;
